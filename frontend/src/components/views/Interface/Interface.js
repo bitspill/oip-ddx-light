@@ -35,10 +35,10 @@ const Interface = ({
   // const opinion = activePage === 'opinion'
   // const theNode = activePage === 'theNode'
   const textIntro = "CONSENSUS ATTENDEES, "
-  const textEnd = " your RVN address to get your free NFT"
+  const textEnd = " to get your free NFT & Coil.com trial"
   return (
     <div className={classes.root}>
-      <div className={classes.banner}>{textIntro} <a href={`mailto:conscensus@alexandrialabs.com?subject=Please send my NFT to ${rvnAddress}`}>Email Us</a> {textEnd}</div>
+            <div className={classes.banner}>{textIntro} <a href={`mailto:conscensus@alexandrialabs.com?subject=Please send my NFT and Coil trial`}>Email Us</a> {textEnd}</div>
       <div className={classes.interfaceContent}>
         <SideBar />
 

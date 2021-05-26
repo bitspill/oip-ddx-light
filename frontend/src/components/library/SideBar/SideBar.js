@@ -132,7 +132,7 @@ const SideBar = ({
 
     <div id='sidebar' className={classes.root}>
       <div className={classes.logo}>
-        <img src='https://www.albawaba.com/themes/custom/abn/logo-new.png' />
+        <img src='https://www.albawaba.com/themes/custom/abn/logo-new.png' width="70%"/>
       </div>
       
 
