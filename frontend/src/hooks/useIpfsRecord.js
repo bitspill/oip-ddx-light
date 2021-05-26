@@ -17,34 +17,36 @@ export default function useIpfsRecord (address, options = {}) {
   const [isSettled, setSettled] = useState(false)
   const [record, setRecord] = useState(null)
 
-  useEffect(() => {
-    function l (...x) {
-      if (log) {
-        console.log(...x)
-      }
+  function l (...x) {
+    if (log) {
+      console.log(...x)
     }
+  }
+
+  async function getRecord () {
+    setLoading(true)
+    setSettled(false)
+    setError('')
+    try {
+      l('get ipfs obj for', log)
+      const res = await getIpfsObject(address, { responseType })
+      setRecord(res)
+      console.log('res: ', res)
+      l('ipfs response for: ', log, res)
+    } catch (err) {
+      l(err)
+      setError(err)
+    } finally {
+      setLoading(false)
+      l('setting settling to true')
+      setSettled(true)
+    }
+    l('done')
+  }
+
+  useEffect(() => {
 
     let current = true
-    async function getRecord () {
-      setLoading(true)
-      setSettled(false)
-      setError('')
-      try {
-        l('get ipfs obj for', log)
-        const res = await getIpfsObject(address, { responseType })
-        setRecord(res)
-        console.log("res: ", res)
-        l('ipfs response for: ', log, res)
-      } catch (err) {
-        l(err)
-        setError(err)
-      } finally {
-        setLoading(false)
-        l('setting settling to true')
-        setSettled(true)
-      }
-      l('done')
-    }
     l('address for: ', log, address)
     if (address && current) {
       getRecord()
@@ -56,5 +58,11 @@ export default function useIpfsRecord (address, options = {}) {
     }
   }, [address, log, responseType])
 
-  return [record, { isLoading, isError, isSettled }]
+  async function updateAddress (addr) {
+    console.log("updating address")
+    address = addr
+    await getRecord()
+  }
+
+  return [record, { isLoading, isError, isSettled, updateAddress }]
 }

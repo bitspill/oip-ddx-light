@@ -20,6 +20,7 @@ import useOip5RecordsByTxid from "../../../hooks/useOip5RecordByTxid";
 import useIpfsRecord from "../../../hooks/useIpfsRecord";
 import createObjectUrl from "../../../../util/file/create-object-url";
 import ExplorerHeader from "../../views/Explorer/ExplorerHeader/ExplorerHeader";
+import axios from 'axios'
 
 const ArticleViewer = ({
   recordPayload,
@@ -46,12 +47,12 @@ const ArticleViewer = ({
   const simpleCoinSaleData = getTemplateData(recordPayload, SIMPCOINSALE);
 
   // const simpleAssetHeldData = getTemplateData(recordPayload, SIMPASSETHELD);
-  
+
   const commercialTerms = getTemplateData(recordPayload, COMMERICAL);
 
   const articleTemplateData = getTemplateData(recordPayload, TMP_ARTICLE);
   const basicTemplateData = getTemplateData(recordPayload, TMP_BASIC);
-  
+
   const commercialTermsOptions = commercialTerms.embeddedTerms
   const commercialTermsSCSisTrue = commercialTermsOptions.includes(3733247363)
   const commercialTermsSAHisTrue = commercialTermsOptions.includes(3993842283)
@@ -62,7 +63,7 @@ const ArticleViewer = ({
   const imageListOipRef = articleTemplateData.imageList;
   const imageCaptionList = articleTemplateData.imageCaptionList;
   const articleTextOipRef = articleTemplateData.articleText;
-  
+
   const simpleCoinSaleOipRef = (commercialTermsSCSisTrue) ? (simpleCoinSaleData.coin) : (null);
 
   const [bylineWriterRecord, writerQuery] =
@@ -80,7 +81,7 @@ const ArticleViewer = ({
   // const simpleCoinSaleTicker = (commercialTermsSCSisTrue) ? (simpleCoinSaleRecord.record.details.tmpl_29F96711.ticker) : (null)
   const simpleCoinSaleQty = (commercialTermsSCSisTrue) ? (recordPayload.record.details.tmpl_DE84D583.amount / recordPayload.record.details.tmpl_DE84D583.scale) : (0)
   const simpleAssetHeldQty = (commercialTermsSAHisTrue) ? (recordPayload.record.details.tmpl_EE0D326B.amount / recordPayload.record.details.tmpl_EE0D326B.scale) : (0)
-  
+
   // const previewTemplate = getTemplateData(articleTextRecord, TMP_TEXT_IS_PREVIEW)
   // const isPreview = previewTemplate?.isPreview || false
 
@@ -128,7 +129,7 @@ const ArticleViewer = ({
     articleTextIpfsAddress
   );
 
-  const [purchasedText, purchaseTextQuery] = useIpfsRecord(
+  let [purchasedText, purchaseTextQuery] = useIpfsRecord(
     purchasedData?.data?.location
   );
 
@@ -169,14 +170,27 @@ const ArticleViewer = ({
         " Ravencoin assets called " +
         recordPayload.record.details.tmpl_EE0D326B.asset
     }
-    
+
     else {
       ret_string = "error loading commercial terms";
     }
     return (ret_string)
-    
+
   }
   const displayCommercialTerms = showCommercialTerms();
+
+  async function termsClick (e) {
+    e.preventDefault()
+    console.log('clicked footer')
+    const body = { valid_until:0, id: recordPayload.meta.txid, term: "3993842283", pre_image:"", signature:"", payment_txid:"", signing_address: "" }
+    try {
+      const res = await axios.post(`https://api.oip.io/oip/o5/location/proof?id=${recordPayload.meta.txid}&terms=3993842283`, body)
+
+      await purchaseTextQuery.updateAddress(res.data.location)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className={clsx(className, c.root)} style={style}>
@@ -239,7 +253,7 @@ const ArticleViewer = ({
             </>
           }
           caption={<span>{imageCaptionList?.join(", ")}</span>}
-        ></Article.MediaView>
+        />
         <Article.Body>
           {textLoading && "Loading article text..."}
           {articleTextDoesNotExists && (
@@ -255,14 +269,16 @@ const ArticleViewer = ({
               className={c.body}
               // dangerouslySetInnerHTML={{ __html: purchasedText || articleTextIpfsRecord }}
             >
-              <div className={clsx(isPreview && c.preview)} />
+              <div className={clsx((isPreview && !purchasedText) && c.preview)} />
               <ReactMarkdown>
                 {purchasedText || articleTextIpfsRecord}
               </ReactMarkdown>
             </div>
           )}
         </Article.Body>
-        <h3>{displayCommercialTerms}</h3>
+        {
+          (displayCommercialTerms && !purchasedText) && <h3 onClick={termsClick}>{displayCommercialTerms}</h3>
+        }
       </Article>
     </div>
   );
