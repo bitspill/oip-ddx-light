@@ -32,6 +32,15 @@ function getPubAddress (wif, useNetwork = 'mainnet') {
   const EC = ECPair.fromWIF(wif, floNetwork)
   return payments.p2pkh({ pubkey: EC.publicKey, network: floNetwork }).address
 }
+
+function getPubAddressRvn (wif, useNetwork = 'mainnet') {
+  console.log(wif)
+  const rvnNetwork =
+    useNetwork === 'mainnet' ? network.rvn_mainnet : network.rvnTestnet
+  const EC = ECPair.fromWIF(wif, rvnNetwork)
+  return payments.p2pkh({ pubkey: EC.publicKey, network: rvnNetwork }).address
+}
+console.log("look over here", getPubAddressRvn)
 //! ****************************************************TIP Function **************************************************/
 export const tip = ({
   paymentAddr,

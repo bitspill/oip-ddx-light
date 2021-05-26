@@ -7,12 +7,14 @@ import Interface from './Interface'
 const InterfaceContainer = ({
   activePage,
   name,
-  openPublisherModal
+  openPublisherModal,
+  rvnAddress
 }) => {
   return <Interface
     activePage={activePage}
     name={name}
     openPublisherModal={openPublisherModal}
+    rvnAddress={rvnAddress}
   />
 }
 InterfaceContainer.propTypes = {

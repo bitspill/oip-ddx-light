@@ -1,13 +1,13 @@
 const config = {
 	//
-	backendApiUrl: 'http://localhost:5000',
+	backendApiUrl: 'https://dev.oip.io',
 	// this is the enpoint the api will use to fetch records/templates. ex. a running oipd node
 	daemonApiUrl: 'https://api.oip.io/oip',
 	// a url to a running Insight explorer endpoint
 	explorerUrl: 'https://livenet.flocha.in/api',
 	// ipfs gateway url
-	//ipfsGatewayUrl: 'https://ipfs-dev.alexandria.io/ipfs',
-	ipfsGatewayUrl: 'https://ipfs.io/ipfs',
+	ipfsGatewayUrl: 'https://ipfs-dev.alexandria.io/ipfs',
+	// ipfsGatewayUrl: 'https://ipfs.io/ipfs',
 	//ipfsGatewayUrl: 'http://localhost:8080/ipfs',
 	// testnet will not offer full functionality. but if you're using this you can probably figure out how to add what you want
 	network: 'mainnet',

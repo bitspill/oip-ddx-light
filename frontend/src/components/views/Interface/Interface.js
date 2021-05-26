@@ -21,7 +21,8 @@ import TheNodePage from '../../pages/TheNodePage'
 const Interface = ({
   classes,
   activePage,
-  openPublisherModal
+  openPublisherModal,
+  rvnAddress
 }) => {
   const explorer = activePage === 'explorer'
   //const publisher = activePage === 'publisher'
@@ -33,10 +34,11 @@ const Interface = ({
   // const sports = activePage === 'sports'
   // const opinion = activePage === 'opinion'
   // const theNode = activePage === 'theNode'
-
+  const textIntro = "CONSENSUS ATTENDEES, "
+  const textEnd = " your RVN address to get your free NFT"
   return (
     <div className={classes.root}>
-      <div className={classes.banner}> Subscribe to NFT nonsense, $50 per month</div>
+      <div className={classes.banner}>{textIntro} <a href={`mailto:conscensus@alexandrialabs.com?subject=Please send my NFT to ${rvnAddress}`}>Email Us</a> {textEnd}</div>
       <div className={classes.interfaceContent}>
         <SideBar />
 

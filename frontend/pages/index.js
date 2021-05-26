@@ -12,7 +12,7 @@ import {
   setDefaultTemplates
 } from '../src/redux/actions/Explorer/creators'
 import { getDefaultRecords, getDefaultTemplates } from '../src/redux/actions/Explorer/thunks'
-import { getBalance, getExchangeRate } from '../src/redux/modules/Wallet/thunks'
+import { getBalance, getExchangeRate, getPubAddressRvn } from '../src/redux/modules/Wallet/thunks'
 import useRegisterPlatform from '../src/hooks/useRegisterPlatform'
 import { registerPlatform, setPlatformData } from '../src/redux/actions/Platform/creators'
 
@@ -25,6 +25,7 @@ const Index = ({
   fetchingTemplatesError,
   getExchangeRate,
   getBalance,
+  getPubAddressRvn,
   daemonApi,
   setPlatformData,
   registerPlatform
@@ -127,7 +128,7 @@ const Index = ({
     }
   }, [])
 
-  return <InterfaceContainer />
+  return <InterfaceContainer rvnAddress={getPubAddressRvn}/>
 }
 
 Index.getInitialProps = async (ctx) => {
